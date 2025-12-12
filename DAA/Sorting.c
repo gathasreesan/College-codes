@@ -62,9 +62,6 @@ quickSort(A,low,pi-1);
 quickSort(A,pi+1,high);
 }
 }
-
-
-
 int main()
 {
 int arr[100],arr1[100],n,key,b;
@@ -80,6 +77,7 @@ scanf("%d",&key);
 linear(arr,n,key);
 arr1=arr;
 // sort before binary search
+//bubble sort
     for (int i = 0; i < n - 1; i++) {
         for (int j = 0; j < n - i - 1; j++) {
             if (arr[j] > arr[j + 1]) {
@@ -97,7 +95,7 @@ arr1=arr;
     else
         printf("Binary Search: Element not found\n");
 
-
+quickSort(arr1,0,n);
 return 0;
 }
 
