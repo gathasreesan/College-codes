@@ -3,7 +3,7 @@
 #include <unistd.h>
 
 int main() {
-    int src = open("input.txt", O_RDONLY);
+    int src = open("input1.txt", O_RDONLY);
     int dest = open("part.txt", O_WRONLY | O_CREAT, 0644);
     char buffer[6];
 
