@@ -26,8 +26,6 @@ int main()
         printf("Priority (Lower number = Higher priority): ");
         scanf("%d", &pr[i]);
     }
-
-    // Sort by Arrival Time first, then by Priority
     for(i = 0; i < n - 1; i++)
     {
         for(j = i + 1; j < n; j++)
@@ -35,22 +33,15 @@ int main()
             if(at[i] > at[j] || 
               (at[i] == at[j] && pr[i] > pr[j]))
             {
-                // Swap AT
                 temp = at[i];
                 at[i] = at[j];
                 at[j] = temp;
-
-                // Swap BT
                 temp = bt[i];
                 bt[i] = bt[j];
                 bt[j] = temp;
-
-                // Swap Priority
                 temp = pr[i];
                 pr[i] = pr[j];
                 pr[j] = temp;
-
-                // Swap PID
                 temp = pid[i];
                 pid[i] = pid[j];
                 pid[j] = temp;
