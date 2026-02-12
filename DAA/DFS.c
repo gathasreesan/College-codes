@@ -1,32 +1,70 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #define MAX 100
 
-int adj[MAX][MAX], visited[MAX], n;
+// Structure for adjacency list node
+struct Node {
+    int vertex;
+    struct Node* next;
+};
 
+struct Node* adjList[MAX];
+int visited[MAX];
+int n;
+
+// Create new node
+struct Node* createNode(int v) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->vertex = v;
+    newNode->next = NULL;
+    return newNode;
+}
+
+// Add edge (Undirected Graph)
+void addEdge(int src, int dest) {
+    struct Node* newNode = createNode(dest);
+    newNode->next = adjList[src];
+    adjList[src] = newNode;
+
+    newNode = createNode(src);
+    newNode->next = adjList[dest];
+    adjList[dest] = newNode;
+}
+
+// DFS Traversal
 void dfs(int v) {
-    int i;
     visited[v] = 1;
     printf("%d ", v);
 
-    for (i = 0; i < n; i++) {
-        if (adj[v][i] == 1 && visited[i] == 0)
-            dfs(i);
+    struct Node* temp = adjList[v];
+    while(temp != NULL) {
+        int adjVertex = temp->vertex;
+        if(!visited[adjVertex])
+            dfs(adjVertex);
+        temp = temp->next;
     }
 }
 
 int main() {
-    int i, j, start, connected = 1;
+    int edges, src, dest, start;
 
     printf("Enter number of vertices: ");
     scanf("%d", &n);
 
-    printf("Enter adjacency matrix:\n");
-    for (i = 0; i < n; i++)
-        for (j = 0; j < n; j++)
-            scanf("%d", &adj[i][j]);
+    for(int i = 0; i < n; i++)
+        adjList[i] = NULL;
 
-    for (i = 0; i < n; i++)
+    printf("Enter number of edges: ");
+    scanf("%d", &edges);
+
+    for(int i = 0; i < edges; i++) {
+        printf("Enter edge (source destination): ");
+        scanf("%d %d", &src, &dest);
+        addEdge(src, dest);
+    }
+
+    for(int i = 0; i < n; i++)
         visited[i] = 0;
 
     printf("Enter starting vertex: ");
@@ -35,12 +73,14 @@ int main() {
     printf("DFS Traversal: ");
     dfs(start);
 
-    for (i = 0; i < n; i++) {
-        if (visited[i] == 0)
+    // Check connectivity
+    int connected = 1;
+    for(int i = 0; i < n; i++) {
+        if(!visited[i])
             connected = 0;
     }
 
-    if (connected)
+    if(connected)
         printf("\nGraph is Connected");
     else
         printf("\nGraph is Not Connected");
