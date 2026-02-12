@@ -3,54 +3,78 @@
 
 #define MAX 100
 
-int adj[MAX][MAX], visited[MAX], queue[MAX];
-int front = -1, rear = -1, n;
+// Structure for adjacency list node
+struct Node {
+    int vertex;
+    struct Node* next;
+};
 
-void enqueue(int v) {
-    if (rear == n - 1)
-        return;
-    if (front == -1)
-        front = 0;
-    queue[++rear] = v;
+struct Node* adjList[MAX];
+int visited[MAX];
+int n;
+
+// Create new node
+struct Node* createNode(int v) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->vertex = v;
+    newNode->next = NULL;
+    return newNode;
 }
 
-int dequeue() {
-    if (front == -1 || front > rear)
-        return -1;
-    return queue[front++];
+// Add edge (Undirected Graph)
+void addEdge(int src, int dest) {
+    struct Node* newNode = createNode(dest);
+    newNode->next = adjList[src];
+    adjList[src] = newNode;
+
+    newNode = createNode(src);
+    newNode->next = adjList[dest];
+    adjList[dest] = newNode;
 }
 
+// BFS Traversal
 void bfs(int start) {
-    int i, v;
-    for (i = 0; i < n; i++)
+    int queue[MAX], front = 0, rear = 0;
+
+    for(int i = 0; i < n; i++)
         visited[i] = 0;
 
-    enqueue(start);
     visited[start] = 1;
+    queue[rear++] = start;
 
-    while (front != -1 && front <= rear) {
-        v = dequeue();
-        printf("%d ", v);
+    while(front < rear) {
+        int current = queue[front++];
+        printf("%d ", current);
 
-        for (i = 0; i < n; i++) {
-            if (adj[v][i] == 1 && visited[i] == 0) {
-                enqueue(i);
-                visited[i] = 1;
+        struct Node* temp = adjList[current];
+        while(temp != NULL) {
+            int adjVertex = temp->vertex;
+            if(!visited[adjVertex]) {
+                visited[adjVertex] = 1;
+                queue[rear++] = adjVertex;
             }
+            temp = temp->next;
         }
     }
 }
 
 int main() {
-    int i, j, start;
+    int edges, src, dest, start;
 
     printf("Enter number of vertices: ");
     scanf("%d", &n);
 
-    printf("Enter adjacency matrix:\n");
-    for (i = 0; i < n; i++)
-        for (j = 0; j < n; j++)
-            scanf("%d", &adj[i][j]);
+    for(int i = 0; i < n; i++)
+        adjList[i] = NULL;
+
+    printf("Enter number of edges: ");
+    scanf("%d", &edges);
+
+    for(int i = 0; i < edges; i++) {
+        printf("Enter edge (source destination): ");
+        scanf("%d %d", &src, &dest);
+        addEdge(src, dest);
+    }
 
     printf("Enter starting vertex: ");
     scanf("%d", &start);
