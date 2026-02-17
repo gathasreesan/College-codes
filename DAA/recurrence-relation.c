@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <time.h>
-
 int factcall=0;
 int fibcall=0;
 int hanoicall=0;
