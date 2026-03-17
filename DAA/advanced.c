@@ -2,16 +2,12 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define DISPLAY_SIZE 10
-#define LARGE_SIZE 20000
-
 void swap(int *a, int *b)
 {
     int t = *a;
     *a = *b;
     *b = t;
 }
-
 void printArray(int arr[], int n)
 {
     for(int i=0;i<n;i++)
@@ -66,53 +62,48 @@ void randomizedQuickSort(int arr[], int low, int high)
 
 int main()
 {
-    int arr[DISPLAY_SIZE], arr2[DISPLAY_SIZE];
+    int n;
+     clock_t start,end;
+    double time_taken;
+printf("Enter size of array: ");
+    scanf("%d", &n);
 
-    printf("Enter %d numbers:\n", DISPLAY_SIZE);
-    for(int i=0;i<DISPLAY_SIZE;i++)
-    {
-        scanf("%d",&arr[i]);
-        arr2[i] = arr[i];
+    int arr[n],arr2[n];
+
+    srand(time(0)); // seed for random numbers
+
+    // Fill array with random numbers
+    for(int i = 0; i < n; i++) {
+        arr[i] = rand() % 100; // numbers between 0–99
     }
 
-    printf("\nInput Array:\n");
-    printArray(arr,DISPLAY_SIZE);
-
-    quickSort(arr,0,DISPLAY_SIZE-1);
+    // Print array
+    printf("Array elements are:\n");
+    for(int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+        arr2[i] = arr[i]; // copy to another array for fair comparison
+    }
+    printf("\n");
+    \
+  
+start = clock();
+    quickSort(arr,0,n-1);
 
     printf("\nSorted using Normal QuickSort:\n");
-    printArray(arr,DISPLAY_SIZE);
+    printArray(arr,n);
+end = clock();
+    time_taken = (double)(end-start)/CLOCKS_PER_SEC;
+ printf("\nTime taken by Normal QuickSort: %f seconds\n", time_taken);
 
-    randomizedQuickSort(arr2,0,DISPLAY_SIZE-1);
+ start = clock();
+    randomizedQuickSort(arr2,0,n-1);
 
     printf("\nSorted using Randomized QuickSort:\n");
-    printArray(arr2,DISPLAY_SIZE);
-
-    // Large arrays for timing
-    int big1[LARGE_SIZE], big2[LARGE_SIZE];
-
-    for(int i=0;i<LARGE_SIZE;i++)
-    {
-        big1[i] = i;        // worst case for normal QuickSort
-        big2[i] = i;
-    }
-
-    clock_t start,end;
-    double time_taken;
-
-    start = clock();
-    quickSort(big1,0,LARGE_SIZE-1);
-    end = clock();
+    printArray(arr2,n);
+end = clock();
     time_taken = (double)(end-start)/CLOCKS_PER_SEC;
-
-    printf("\nTime taken by Normal QuickSort (large input): %f seconds\n", time_taken);
-
-    start = clock();
-    randomizedQuickSort(big2,0,LARGE_SIZE-1);
-    end = clock();
-    time_taken = (double)(end-start)/CLOCKS_PER_SEC;
-
-    printf("Time taken by Randomized QuickSort (large input): %f seconds\n", time_taken);
+printf("Time taken by Randomized QuickSort: %f seconds\n", time_taken);
 
     return 0;
+    
 }

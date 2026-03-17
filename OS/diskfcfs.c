@@ -14,4 +14,4 @@ head=req[i];
 
 printf("Total head movement = %d",total);
 return 0;
-}
+},
