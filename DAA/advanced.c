@@ -74,7 +74,7 @@ printf("Enter size of array: ");
 
     // Fill array with random numbers
     for(int i = 0; i < n; i++) {
-        arr[i] = rand() % 100; // numbers between 0–99
+        arr[i] = rand() % 1000; // numbers between 0–99
     }
 
     // Print array
